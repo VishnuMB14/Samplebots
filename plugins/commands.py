@@ -85,39 +85,38 @@ async def start(client, message):
         return
         
     if AUTH_CHANNELS and not await is_subscribed(client, message):
-    try:
-        invite_links = []
-        for channel_id in AUTH_CHANNELS:
-            if channel_id in REQUEST_TO_JOIN_CHANNELS:
-                invite_link = await client.create_chat_invite_link(chat_id=int(channel_id), creates_join_request=True)
-            else:
-                invite_link = await client.create_chat_invite_link(int(channel_id))
-            invite_links.append(invite_link.invite_link)
-    except Exception as e:
-        print(e)
-        await message.reply_text("Make sure Bot is admin in all Forcesub channels")
-        return
-
-    try:
-        btn = []
-        for i, link in enumerate(invite_links, start=1):
-            btn.append([InlineKeyboardButton(f"❆ Join Channel {i} ❆", url=link)])
-
-        if message.command[1] != "subscribe":
-            for i, channel_id in enumerate(AUTH_CHANNELS):
-                if channel_id in REQUEST_TO_JOIN_CHANNELS and REQUEST_TO_JOIN_MODE:
-                    if TRY_AGAIN_BTN:
-                        try:
-                            kk, file_id = message.command[1].split("_", 1)
-                            btn.append([InlineKeyboardButton("↻ Try Again", callback_data=f"checksub#{kk}#{file_id}")])
-                        except (IndexError, ValueError):
-                            btn.append([InlineKeyboardButton("↻ Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
+        try:
+            invite_links = []
+            for channel_id in AUTH_CHANNELS:
+                if channel_id in REQUEST_TO_JOIN_CHANNELS:
+                    invite_link = await client.create_chat_invite_link(chat_id=int(channel_id), creates_join_request=True)
                 else:
+                    invite_link = await client.create_chat_invite_link(int(channel_id))
+                    invite_links.append(invite_link.invite_link)
+        except Exception as e:
+            print(e)
+            await message.reply_text("Make sure Bot is admin in all Forcesub channels")
+            return
+            
+        try:
+            btn = []
+            for i, link in enumerate(invite_links, start=1):
+                btn.append([InlineKeyboardButton(f"❆ Join Channel {i} ❆", url=link)]
+                           if message.command[1] != "subscribe":
+                           for i, channel_id in enumerate(AUTH_CHANNELS):
+                           if channel_id in REQUEST_TO_JOIN_CHANNELS and REQUEST_TO_JOIN_MODE:
+                if TRY_AGAIN_BTN:
                     try:
                         kk, file_id = message.command[1].split("_", 1)
                         btn.append([InlineKeyboardButton("↻ Try Again", callback_data=f"checksub#{kk}#{file_id}")])
                     except (IndexError, ValueError):
                         btn.append([InlineKeyboardButton("↻ Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
+                    else:
+                        try:
+                            kk, file_id = message.command[1].split("_", 1)
+                            btn.append([InlineKeyboardButton("↻ Try Again", callback_data=f"checksub#{kk}#{file_id}")])
+                        except (IndexError, ValueError):
+                            btn.append([InlineKeyboardButton("↻ Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
 
         text = "**🕵️ Join All Update Channels to Get Movie File\n\n👨‍💻 Click on all Join Channel buttons. After that, click on the Try Again button.**"
 
