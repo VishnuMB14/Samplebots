@@ -33,13 +33,33 @@ STREAM_SITE = (environ.get('STREAM_SITE', ''))
 STREAM_API = (environ.get('STREAM_API', ''))
 STREAMHTO = (environ.get('STREAMHTO', 'https://t.me/Shortnerlinksopen/7'))
 
+# List of all required channels (Channel IDs must be integers)
+# These are the channels the user must join to access the bot's content
+AUTH_CHANNELS = [-1001996186113, -1002102444314]
+
+# Subset of AUTH_CHANNELS that require "Request to Join Mode"
+# Users need to send a join request to these channels
+REQUEST_TO_JOIN_CHANNELS = [-1002274354771, -1002363245479]
+
+# Enable or disable the global request-to-join functionality
+# Set this to True if some channels require "Request to Join Mode"
+REQUEST_TO_JOIN_MODE = True
+
+# Enable or disable the "Try Again" button
+# If True, a "Try Again" button will be shown to users after they join channels
+TRY_AGAIN_BTN = True
+
+# Temporary username for your bot
+# Replace "YourBotUsername" with your actual bot's username
+TEMP_BOT_USERNAME = "TGCWFilestorebot"
+
 # Admins, Channels & Users
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '5807740619').split()]
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002132474788 -1002145868115').split()] #Channel id for auto indexing ( make sure bot is admin )
 auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '5807740619').split()]
 AUTH_USERS = (auth_users + ADMINS) if auth_users else []
 PREMIUM_USER = [int(user) if id_pattern.search(user) else user for user in environ.get('PREMIUM_USER', '').split()]
-auth_channel = environ.get('AUTH_CHANNEL', '-1002274354771') #Channel / Group Id for force sub ( make sure bot is admin )
+auth_channel = environ.get('AUTH_CHANNEL') #Channel / Group Id for force sub ( make sure bot is admin )
 auth_grp = environ.get('AUTH_GROUP')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
